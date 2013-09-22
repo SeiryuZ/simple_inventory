@@ -22,10 +22,21 @@ angular.module('simpleInventoryApp')
 
       login: function(user, success, error) {
         console.log( 'LOGGING IN', user);
-        $http.post('/api/login', user).success(function(user){
+        $http.post('/login', user).success(function(user){
           $rootScope.user = user;
           success(user);
         }).error(error);
+      },
+
+      logout: function(user, success, error) {
+        console.log( 'LOGGING OUT');
+        $http.get('/logout').success(success).error(error);
+      },
+
+
+      register: function(user, success, error) {
+        console.log( 'REGISTERING', user);
+        $http.post('/register', user).success(success).error(error);
       },
 
       user: currentUser

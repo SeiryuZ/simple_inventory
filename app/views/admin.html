@@ -1,8 +1,10 @@
 <div class="hero-unit">
-    <form ng-submit="login()">
+    <form >
         username: <input type="text" ng-model="user.username">
         password: <input type="password" ng-model="user.password">
-        <button>Login</button>
+        <br>
+        <button ng-click="login()">Login</button>
+        <button ng-click="register()">Register</button>
     </form>
     <a href="/">Home</a>
     <button ng-click="test()">Test</button>

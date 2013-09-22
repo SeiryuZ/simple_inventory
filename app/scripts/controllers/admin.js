@@ -16,7 +16,7 @@ angular.module('simpleInventoryApp')
 
     $scope.logout = function () {
         console.log('logout');
-        $http.post('/api/logout', {'test': 'qw'}).success(function(){
+        Auth.logout(function(){
           console.log('succes logout');
         }).error(function(){
             console.log('error logout');
@@ -26,6 +26,15 @@ angular.module('simpleInventoryApp')
     $scope.login = function() {
         console.log('trying to login');
         Auth.login($scope.user, function(){
+            console.log('success login');
+          }, function(){
+            console.log('error login');
+          });
+      };
+
+    $scope.register = function() {
+        console.log('trying to register');
+        Auth.register($scope.user, function(){
             console.log('success login');
           }, function(){
             console.log('error login');
