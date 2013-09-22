@@ -1,43 +1,22 @@
 'use strict';
 
 angular.module('simpleInventoryApp')
-  .controller('AdminCtrl', function ($scope, Auth, $http) {
+  .controller('AdminCtrl', function ($scope, Restangular) {
 
-    $scope.user = {username: '', password: ''};
+    var baseProducts = Restangular.all('api/products');
 
-    $scope.test = function () {
-        console.log('testing restricted resource');
-        $http.post('/api/products', {'test': 'qw'}).success(function(){
-          console.log('succes restricted');
-        }).error(function(){
-            console.log('error restricted');
-          });
-      };
+    $scope.products = [];
 
-    $scope.logout = function () {
-        console.log('logout');
-        Auth.logout(function(){
-          console.log('succes logout');
-        }).error(function(){
-            console.log('error logout');
-          });
-      };
+    $scope.newProduct = {};
 
-    $scope.login = function() {
-        console.log('trying to login');
-        Auth.login($scope.user, function(){
-            console.log('success login');
-          }, function(){
-            console.log('error login');
-          });
-      };
 
-    $scope.register = function() {
-        console.log('trying to register');
-        Auth.register($scope.user, function(){
-            console.log('success login');
-          }, function(){
-            console.log('error login');
-          });
-      };
+    $scope.refresh = function () {
+      console.log('refreshing list');
+      $scope.products = baseProducts.getList();
+    };
+
+    $scope.createNewProduct  = function () {
+      console.log('creating new product');
+      baseProducts.post($scope.newProduct);
+    };
   });

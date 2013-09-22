@@ -1,13 +1,28 @@
-<div class="hero-unit">
-    <form >
-        username: <input type="text" ng-model="user.username">
-        password: <input type="password" ng-model="user.password">
-        <br>
-        <button ng-click="login()">Login</button>
-        <button ng-click="register()">Register</button>
+<div class="auth-box" ng-include="'views/auth.html'"></div>
+
+<div>
+
+    <button ng-click="refresh()"> Refresh List</button>
+    <br>
+    Create New Product
+    <form action="">
+        Nama: <input type="text" ng-model="newProduct.Nama">
+        Kubikasi: <input type="text" ng-model="newProduct.Kubikasi">
+        Harga modal: <input type="text" ng-model="newProduct.Harga_modal">
+        Harga jual: <input type="text" ng-model="newProduct.Harga_jual">
+        Ongkos Expedisi: <input type="text" ng-model="newProduct.Ongkos_expedisi">
+        Stock: <input type="text" ng-model="newProduct.Stock">
+        Ongkos Kirim JNE: <input type="text" ng-model="newProduct.Ongkos_kirim">
+
+        <button ng-click="createNewProduct()">Create</button>
     </form>
-    <a href="/">Home</a>
-    <button ng-click="test()">Test</button>
-    <button ng-click="logout()">logout</button>
+
+
+    <div class="table-product">
+        <div ng-repeat="product in products">
+            {{product.Nama}}
+        </div>
+
+    </div>
 
 </div>

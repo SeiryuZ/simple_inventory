@@ -5,6 +5,7 @@ import (
 	"appengine/memcache"
 	"encoding/json"
 	"errors"
+	mux "github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
 	"log"
 	"net/http"
@@ -16,9 +17,13 @@ import (
 var store = sessions.NewCookieStore([]byte("something-very-secret"))
 
 func init() {
-	http.HandleFunc("/login", loginHandler)
-	http.HandleFunc("/logout", logoutHandler)
-	http.HandleFunc("/register", registerHandler)
+
+}
+
+func InitRouter(router *mux.Router) {
+	router.HandleFunc("/login", loginHandler)
+	router.HandleFunc("/logout", logoutHandler)
+	router.HandleFunc("/register", registerHandler)
 }
 
 // function to validate sessions authentication
@@ -59,6 +64,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	result, err := user.Authenticate(c)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusForbidden)
+		return
 	}
 
 	// create session token with username, ip, secret key
