@@ -36,6 +36,11 @@ func getUserFromUsername(c appengine.Context, username string) (User, error) {
 	if len(users) > 1 {
 		return user, errors.New("More than one user is returned, something bad happened")
 	}
+
+	if len(users) == 0 {
+		return User{}, nil
+	}
+
 	return users[0], nil
 }
 
@@ -46,6 +51,10 @@ func (user User) Authenticate(c appengine.Context) (User, error) {
 	potential_user, err := getUserFromUsername(c, user.Username)
 	if err != nil {
 		return user, err
+	}
+
+	if potential_user != (User{}) {
+		return potential_user, nil
 	}
 
 	// Check password match

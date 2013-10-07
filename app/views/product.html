@@ -1,0 +1,97 @@
+<div ng-controller="ProductCtrl">
+    <header class="row"><h1 class="large-8 columns large-offset-2 center">List Products</h1></header>
+
+    <div class="row alert-box {{ alertType }} radius" ng-show="showAlert">
+        <div class="large-8 columns large-offset-2 "> {{alert}} </div>
+    </div>
+
+    <div class="toolbar row">
+        <button class="large-4 columns radius small" ng-click="listProduct()">Refresh</button>
+        <button class="large-4 columns radius small" ng-click="showAddProductForm()">Add</button>
+    </div>
+
+    <div class="add-product-form row panel" ng-show="showAddForm">
+            <header><h1>Create New Product</h1></header>
+            <form action="" class="row" ng-submit="createNewProduct()">
+
+                <fieldset class="row">
+                    <legend>Keterangan</legend>
+
+                    <div class="columns large-4">
+                        <label>Nama</label>
+                        <input type="text"  ng-model="newProduct.Nama" required>
+                    </div>
+
+                    <div class="columns large-6">
+                        <label>Kubikasi</label>
+                        <input type="text"  ng-model="newProduct.Kubikasi">
+                    </div>
+                    <div class="columns large-2">
+                        <label>Stok</label>
+                        <input type="text"  ng-model="newProduct.Stock">
+                    </div>
+                </fieldset>
+
+
+                <fieldset class="row">
+                    <legend>Harga / Ongkos</legend>
+
+                    <div class="columns large-3">
+                        <label >Harga Modal</label>
+                        <input type="text" ng-model="newProduct.Harga_modal" required>
+                    </div>
+
+                    <div class="columns large-3">
+                        <label >Harga Jual</label>
+                        <input type="text" ng-model="newProduct.Harga_jual" required>
+                    </div>
+
+                    <div class="columns large-3">
+                        <label >Ongkos Expedisi</label>
+                        <input type="text" ng-model="newProduct.Ongkos_expedisi" required>
+                    </div>
+
+                    <div class="columns large-3">
+                        <label >Ongkos Kirim</label>
+                        <input type="text" ng-model="newProduct.Ongkos_kirim" required>
+                    </div>
+
+                </fieldset>
+                <div class="row">
+                    <button class="columns large-1 small radius large-offset-10">Create</button>
+                </div>
+            </form>
+        </div>
+
+    <div class="table-product row">
+        <table class="large-12 columns">
+            <thead>
+                <td> Nama </td>
+                <td> Kubikasi </td>
+                <td> Harga Modal </td>
+                <td> Harga Jual </td>
+                <td> Ongkos expedisi</td>
+                <td> Stock </td>
+                <td> Ongkos Kirim JNE</td>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="product in products">
+                    <td>{{product.Nama}}</td>
+                    <td>{{product.Kubikasi}}</td>
+                    <td>{{product.Harga_modal}}</td>
+                    <td>{{product.Harga_jual}}</td>
+                    <td>{{product.Ongkos_expedisi}}</td>
+                    <td>{{product.Stock}}</td>
+                    <td>{{product.Ongkos_kirim}}</td>
+
+                </tr>
+            </tbody>
+        </table>
+
+<!--        <div ng-repeat="product in products">
+            {{product.Nama}}
+        </div> -->
+
+    </div>
+</div>

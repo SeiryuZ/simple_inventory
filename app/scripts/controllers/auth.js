@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('simpleInventoryApp')
-  .controller('AuthCtrl', function ($scope, Auth, $http) {
+  .controller('AuthCtrl', function ($scope, Auth, $http, $location) {
     $scope.user = {username: '', password: ''};
 
     $scope.test = function () {
@@ -17,7 +17,7 @@ angular.module('simpleInventoryApp')
         console.log('logout');
         Auth.logout(function(){
           console.log('succes logout');
-        }).error(function(){
+        },function(){
             console.log('error logout');
           });
       };
@@ -26,6 +26,9 @@ angular.module('simpleInventoryApp')
         console.log('trying to login');
         Auth.login($scope.user, function(){
             console.log('success login');
+
+            $location.path('/admin/products');
+
           }, function(){
             console.log('error login');
           });
@@ -34,9 +37,9 @@ angular.module('simpleInventoryApp')
     $scope.register = function() {
         console.log('trying to register');
         Auth.register($scope.user, function(){
-            console.log('success login');
-          }, function(){
-            console.log('error login');
+            console.log('success register');
+          }, function(error){
+            console.log('error register' + error);
           });
       };
   });

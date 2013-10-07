@@ -17,6 +17,13 @@ angular.module('simpleInventoryApp')
 
     $scope.createNewProduct  = function () {
       console.log('creating new product');
-      baseProducts.post($scope.newProduct);
+      baseProducts.post($scope.newProduct, function(error){
+        console.log('success')
+        console.log(error);
+      }, function(error){
+        console.log('error')
+                console.log(error);
+
+      });
     };
   });
