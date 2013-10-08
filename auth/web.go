@@ -63,7 +63,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	// try loggin in
 	result, err := user.Authenticate(c)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusForbidden)
+		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
 

@@ -28,12 +28,12 @@ angular.module('simpleInventoryApp', ['restangular', 'ngCookies'])
           return response;
         }, function(response) {
 
-          console.log ("HEREEE", response.status === 403)
-          if (response.status === 403) {
+          // redirect to login page on forbidden / unauthorized error
+          if (response.status === 401 || response.status === 403) {
             $location.path('/admin');
-            return $q.reject(response);
           }
           return $q.reject(response);
+
         });
       };
     });
