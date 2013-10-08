@@ -21,6 +21,7 @@ type Product struct {
 	Ongkos_expedisi string
 	Stock           string
 	Ongkos_kirim    string
+	ID              int64 `datastore:"-"`
 }
 
 // templates variable
@@ -45,10 +46,14 @@ func productListHandler(w http.ResponseWriter, r *http.Request) {
 	products := make([]Product, 0, 20)
 
 	//query all products
-	_, err := query.GetAll(c, &products)
+	keys, err := query.GetAll(c, &products)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	}
+	//attach the key queried to the struct
+	for index := range products {
+		products[index].ID = keys[index].IntID()
 	}
 
 	response, err := json.Marshal(products)
@@ -60,7 +65,7 @@ func productCreateHandler(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	err := auth.ValidateSession(c, r)
 	if err != nil {
-		http.Error(w, "Unauthorized", http.StatusForbidden)
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
 

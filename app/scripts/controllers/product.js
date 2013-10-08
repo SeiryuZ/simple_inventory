@@ -26,12 +26,12 @@ angular.module('simpleInventoryApp')
     $scope.alertType = '';
     $scope.alert = '';
 
-    $scope.listProduct = function () {
+    $scope.listProduct = function() {
         console.log('list product');
         $scope.products = baseProducts.getList();
       };
 
-    $scope.createNewProduct  = function () {
+    $scope.createNewProduct  = function() {
       console.log('creating new product');
       baseProducts.post($scope.newProduct).then(function() {
         $scope.showAddForm = false;
@@ -44,7 +44,7 @@ angular.module('simpleInventoryApp')
         $scope.showAlert = true;
         hideAlert();
 
-      }, function () {
+      }, function() {
 
         $scope.alert = 'There\'s something wrong';
         $scope.alertType = 'alert';
@@ -54,9 +54,17 @@ angular.module('simpleInventoryApp')
       });
     };
 
-    $scope.showAddProductForm = function () {
+    $scope.showAddProductForm = function() {
         $scope.showAddForm = !$scope.showAddForm;
       };
+
+    $scope.deleteProduct = function(product) {
+      var confirm = window.confirm('Are you sure? Product will be deleted');
+
+      if (confirm) {
+        Restangular.one('api/products', product.ID).remove();
+      }
+    };
 
     $scope.listProduct();
   });
