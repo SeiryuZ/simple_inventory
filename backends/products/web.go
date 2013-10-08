@@ -1,14 +1,12 @@
-package simple_inventory
+package products
 
 import (
 	"appengine"
 	"appengine/datastore"
+	"backends/auth"
 	"encoding/json"
-
-	"auth"
 	"fmt"
 	mux "github.com/gorilla/mux"
-	"html/template"
 	"log"
 	"net/http"
 	"strconv"
@@ -25,20 +23,14 @@ type Product struct {
 	ID              int64 `datastore:"-"`
 }
 
-// templates variable
-var templates = template.Must(template.ParseGlob("app/*.html"))
-
 func init() {
-	r := mux.NewRouter()
 
-	auth.InitRouter(r)
+}
 
-	r.HandleFunc("/", handler)
-	r.HandleFunc("/api/products", productListHandler).Methods("GET")
-	r.HandleFunc("/api/products", productCreateHandler).Methods("POST")
-	r.HandleFunc("/api/products/{product_id}", productDeleteHandler).Methods("DELETE")
-
-	http.Handle("/", r)
+func InitRouter(router *mux.Router) {
+	router.HandleFunc("/api/products", productListHandler).Methods("GET")
+	router.HandleFunc("/api/products", productCreateHandler).Methods("POST")
+	router.HandleFunc("/api/products/{product_id}", productDeleteHandler).Methods("DELETE")
 }
 
 func productListHandler(w http.ResponseWriter, r *http.Request) {
@@ -122,11 +114,6 @@ func productDeleteHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Cannot delete product", http.StatusBadRequest)
 		return
 	}
-}
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	err := templates.ExecuteTemplate(w, "index.html", nil)
-	handleError(w, err)
 }
 
 func handleError(res http.ResponseWriter, err error) {
