@@ -1,4 +1,5 @@
 'use strict';
+/* global _ */
 
 angular.module('simpleInventoryApp')
   .controller('ProductCtrl', function ($scope, Restangular, $timeout) {
@@ -28,15 +29,17 @@ angular.module('simpleInventoryApp')
 
     $scope.listProduct = function() {
         console.log('list product');
-        $scope.products = baseProducts.getList();
+        baseProducts.getList().then(function(products){
+          $scope.products = products;
+        });
       };
 
     $scope.createNewProduct  = function() {
       console.log('creating new product');
-      baseProducts.post($scope.newProduct).then(function() {
+      baseProducts.post($scope.newProduct).then(function(product) {
         $scope.showAddForm = false;
 
-        $scope.products.push($scope.newProduct);
+        $scope.products.push(product);
         $scope.newProduct = {};
 
         $scope.alert = 'Product has been created';
@@ -62,7 +65,20 @@ angular.module('simpleInventoryApp')
       var confirm = window.confirm('Are you sure? Product will be deleted');
 
       if (confirm) {
-        Restangular.one('api/products', product.ID).remove();
+        var targetProduct = _.find($scope.products, function(searchedProduct){
+          return searchedProduct.ID === product.ID;
+        });
+
+        targetProduct.id = targetProduct.ID;
+        targetProduct.remove().then(function(){
+          $scope.products = _.without($scope.products, targetProduct);
+        });
+
+        $scope.alert = 'Product has been deleted';
+        $scope.alertType = 'success';
+        $scope.showAlert = true;
+        hideAlert();
+
       }
     };
 

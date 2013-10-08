@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('simpleInventoryApp', ['restangular', 'ngCookies'])
-  .config(function ($routeProvider, $provide,  $httpProvider) {
+  .config(function ($routeProvider, $provide,  $httpProvider, RestangularProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -39,6 +39,11 @@ angular.module('simpleInventoryApp', ['restangular', 'ngCookies'])
     });
 
     $httpProvider.responseInterceptors.push('myHttpInterceptor');
+
+
+    RestangularProvider.setRestangularFields({
+      id: 'ID'
+    });
   });
 
 
