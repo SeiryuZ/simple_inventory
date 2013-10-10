@@ -119,7 +119,7 @@ func productDeleteHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, "Problem with database", http.StatusInternalServerError)
 	}
-	log.Println(product)
+
 	// mark it as deleted, soft-delete
 	product.Is_active = false
 	_, err = datastore.Put(c, key, &product)
