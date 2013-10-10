@@ -21,7 +21,7 @@ angular.module('simpleInventoryApp', ['restangular', 'ngCookies'])
 
 
 
-    $provide.factory('myHttpInterceptor', function($q, $location) {
+    $provide.factory('myHttpInterceptor', function($q, $location, $rootScope) {
       return function(promise) {
         return promise.then(function(response) {
           // do nothing on success
@@ -30,6 +30,7 @@ angular.module('simpleInventoryApp', ['restangular', 'ngCookies'])
 
           // redirect to login page on forbidden / unauthorized error
           if (response.status === 401 || response.status === 403) {
+            $rootScope.loggedIn = false;
             $location.path('/admin');
           }
           return $q.reject(response);
@@ -44,6 +45,10 @@ angular.module('simpleInventoryApp', ['restangular', 'ngCookies'])
     RestangularProvider.setRestangularFields({
       id: 'ID'
     });
+  }).run(function($rootScope){
+
+    $rootScope.loggedIn = $rootScope.loggedIn || false;
+
   });
 
 

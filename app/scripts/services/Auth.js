@@ -28,7 +28,7 @@ angular.module('simpleInventoryApp')
         }).error(error);
       },
 
-      logout: function(user, success, error) {
+      logout: function(success, error) {
         console.log( 'LOGGING OUT');
         $http.get('/logout').success(success).error(error);
       },

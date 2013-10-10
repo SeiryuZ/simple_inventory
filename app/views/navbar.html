@@ -1,4 +1,4 @@
-<nav class="top-bar">
+<nav class="top-bar" ng-controller="AuthCtrl">
   <ul class="title-area">
     <!-- Title Area -->
     <li class="name">
@@ -54,8 +54,8 @@
     </ul>
 
     <!-- Right Nav Section -->
-    <!-- <ul class="right">
-      <li class="divider hide-for-small"></li>
+    <ul class="right">
+      <!--<li class="divider hide-for-small"></li>
       <li class="has-dropdown"><a href="#">Main Item 4</a>
 
         <ul class="dropdown">
@@ -101,11 +101,11 @@
             </div>
           </div>
         </form>
-      </li>
+      </li>-->
       <li class="divider show-for-small"></li>
-      <li class="has-form">
-        <a class="button" href="#">Button!</a>
+      <li class="has-form" ng-show="loggedIn" >
+        <a ng-click="logout()" >Logout</a>
       </li>
-    </ul> -->
+    </ul>
   </section>
 </nav>

@@ -1,8 +1,12 @@
 'use strict';
 
 angular.module('simpleInventoryApp')
-  .controller('AuthCtrl', function ($scope, Auth, $http, $location) {
+  .controller('AuthCtrl', function ($scope, Auth, $http, $location, $rootScope) {
     $scope.user = {username: '', password: ''};
+
+    if ($rootScope.loggedIn === true) {
+      $location.path('/admin/products');
+    }
 
     $scope.test = function () {
         console.log('testing restricted resource');
@@ -17,6 +21,8 @@ angular.module('simpleInventoryApp')
         console.log('logout');
         Auth.logout(function(){
           console.log('succes logout');
+          $rootScope.loggedIn = false;
+          $location.path('/admin');
         },function(){
             console.log('error logout');
           });
@@ -26,7 +32,7 @@ angular.module('simpleInventoryApp')
         console.log('trying to login');
         Auth.login($scope.user, function(){
             console.log('success login');
-
+            $rootScope.loggedIn = true;
             $location.path('/admin/products');
 
           }, function(){
