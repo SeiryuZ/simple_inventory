@@ -20,6 +20,7 @@ type Product struct {
 	Ongkos_expedisi string
 	Stock           string
 	Ongkos_kirim    string
+	Is_active       bool
 	ID              int64 `datastore:"-"`
 }
 
@@ -42,7 +43,7 @@ func productListHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	query := datastore.NewQuery("Products").Limit(20)
+	query := datastore.NewQuery("Products").Filter("Is_active =", true).Limit(20)
 	products := make([]Product, 0, 20)
 
 	//query all products
@@ -79,7 +80,9 @@ func productCreateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// save the user
+	product.Is_active = true
+
+	// save the products
 	key := datastore.NewIncompleteKey(c, "Products", nil)
 	key, err = datastore.Put(c, key, &product)
 
@@ -109,7 +112,17 @@ func productDeleteHandler(w http.ResponseWriter, r *http.Request) {
 
 	// Construct key and delete stuff
 	key := datastore.NewKey(c, "Products", "", product_id, nil)
-	err = datastore.Delete(c, key)
+
+	// Get the product
+	var product Product
+	err = datastore.Get(c, key, &product)
+	if err != nil {
+		http.Error(w, "Problem with database", http.StatusInternalServerError)
+	}
+	log.Println(product)
+	// mark it as deleted, soft-delete
+	product.Is_active = false
+	_, err = datastore.Put(c, key, &product)
 	if err != nil {
 		http.Error(w, "Cannot delete product", http.StatusBadRequest)
 		return
