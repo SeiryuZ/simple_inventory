@@ -11,6 +11,7 @@ import (
 type User struct {
 	Username string
 	Password string
+	ID       int64 `datastore="-"`
 }
 
 const COST = 12
@@ -29,7 +30,7 @@ func getUserFromUsername(c appengine.Context, username string) (User, error) {
 	query := datastore.NewQuery("Users").Filter("Username =", username)
 
 	var users []User
-	_, err := query.GetAll(c, &users)
+	keys, err := query.GetAll(c, &users)
 	if err != nil {
 		return user, err
 	}
@@ -40,8 +41,9 @@ func getUserFromUsername(c appengine.Context, username string) (User, error) {
 	if len(users) == 0 {
 		return User{}, nil
 	}
-
-	return users[0], nil
+	user = users[0]
+	user.ID = keys[0].IntID()
+	return user, nil
 }
 
 // Authenticate function. Take a clear text password and match with the hashed password

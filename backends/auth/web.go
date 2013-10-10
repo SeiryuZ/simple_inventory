@@ -43,6 +43,13 @@ func ValidateSession(c appengine.Context, r *http.Request) error {
 	return nil
 }
 
+func GetUserFromSession(c appengine.Context, r *http.Request) (int64, error) {
+	session, _ := store.Get(r, "session-inventory")
+	UserID, _ := session.Values["UserID"].(int64)
+	log.Println(session.Values)
+	return UserID, nil
+}
+
 func logoutHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := store.Get(r, "session-inventory")
 	session.Values["token"] = ""
@@ -71,6 +78,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	token := getAuthToken(result.Username)
 	session, _ := store.Get(r, "session-inventory")
 	session.Values["token"] = token
+	session.Values["UserID"] = result.ID
 	session.Save(r, w)
 
 	// store in memcache
